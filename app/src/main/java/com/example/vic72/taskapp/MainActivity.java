@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        //コメント
 
         //Realmの設定
         mRealm = Realm.getDefaultInstance();
