@@ -1,13 +1,18 @@
 package com.example.vic72.taskapp;
 
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by vic72 on 2017/10/01.
@@ -15,13 +20,13 @@ import java.util.List;
 
 public class TaskAdapter extends BaseAdapter  {
     private LayoutInflater mLayout;
-private List<String> mTaskList;
+private List<Task> mTaskList;
 
     public TaskAdapter(Context context) {
         mLayout = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void setmTaskList(List<String> taskList) {
+    public void setmTaskList(List<Task> taskList) {
         mTaskList = taskList;
     }
 
@@ -37,22 +42,28 @@ private List<String> mTaskList;
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return mTaskList.get(position).getId();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = mLayout.inflate(android.R.layout.simple_list_item_2, null);
         }
 
-        TextView text1 = (TextView) convertView.findViewById(R.id.text);
-        TextView text2 = (TextView) convertView.findViewById(R.id.text2);
+        TextView textView1 = (TextView) convertView.findViewById(android.R.id.text1);
+        TextView textView2 = (TextView) convertView.findViewById(android.R.id.text2);
 
+        // 後でTaskクラスから情報を取得するように変更する
+        textView1.setText(mTaskList.get(position).getTitle());
 
-//        text1.setText(mTaskList.get(position));
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.JAPANESE);
+        Date date = mTaskList.get(position).getDate();
+        textView2.setText(simpleDate.format(date));
 
         return convertView;
     }
+
 
 }
